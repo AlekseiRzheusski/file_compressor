@@ -1,4 +1,6 @@
 import io
+import string
+import random
 
 class FileCompressor():
     def __init__(self,filepath = 'files/file',compressedpath = 'files/compressedFile'):
@@ -13,9 +15,12 @@ class FileCompressor():
                 words.clear()
                 words = line.split()
                 for word in words:
-                    if len(word)>3:
+                    if len(word)>4:
                         if word in list_of_words:
                             list_of_words[word] += 1
                         else:
                             list_of_words[word] = 1
-        print(list_of_words)
+        return list_of_words
+
+    def key_generator(self,size=3,chars = string.ascii_uppercase):
+        return '#'+''.join(random.choice(chars) for _ in range(size))
