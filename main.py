@@ -1,2 +1,5 @@
+from filecompressor import FileCompressor
+
 if __name__=="__main__":
-    pass
+    compressor = FileCompressor()
+    compressor.create_list_of_words()
