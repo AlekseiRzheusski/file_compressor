@@ -1,6 +1,7 @@
 import io
 import string
 import random
+import json
 
 
 def key_generator(size=4, chars=string.ascii_letters + string.digits):
@@ -33,9 +34,28 @@ class FileCompressor():
         count = 0
         for key, value in words.items():
             if value * len(key) > value * 5 + (6 + len(key)):
-                dictionary_key = key_generator()
-                dictionary[dictionary_key] = key
-                count+=1
+                dictionary_key = key
+                dictionary[dictionary_key] = key_generator()
+                count += 1
         print(count)
         print(len(dictionary))
         return dictionary
+
+    def create_compressed_file(self):
+        dictionary = self.create_dictionary()
+        words = []
+        print(dictionary)
+        with io.open(self.compressedpath, 'w', encoding='utf-8') as file:
+            json.dump(dictionary, file, ensure_ascii=False)
+        with io.open(self.filepath, 'r') as readed_file:
+            with io.open(self.compressedpath, 'a', encoding='utf-8') as writed_file:
+                for line in readed_file.readlines():
+                    words.clear()
+                    words = line.split()
+                    for i in range(len(words)):
+                        if words[i] in dictionary:
+                            words[i] = dictionary[words[i]]
+                    writed_line = ' '.join(words)
+                    print(writed_line)
+                    writed_file.write(writed_line)
+
