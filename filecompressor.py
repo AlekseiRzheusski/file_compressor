@@ -13,12 +13,21 @@ class FileCompressor():
         self.filepath = filepath
         self.compressedpath = compressedpath
 
+    def create_utf8(self):
+        with io.open(self.filepath, 'r',encoding='utf-8') as file:
+            tmp_string = file.read()
+        with io.open(self.filepath, 'a', encoding='utf-8') as writed_file:
+            writed_file.write(tmp_string)
+
     def create_list_of_words(self):
         list_of_words = {}
         words = []
-        with io.open(self.filepath, 'r') as file:
+        with io.open(self.filepath, 'r',encoding='utf-8') as file:
             for line in file.readlines():
                 words.clear()
+                translator = str.maketrans('','', string.punctuation)
+                line = line.translate(translator)
+                line = line.lower()
                 words = line.split()
                 for word in words:
                     if len(word) > 5:
@@ -45,8 +54,11 @@ class FileCompressor():
         dictionary = self.create_dictionary()
         words = []
         print(dictionary)
+        key_line = '5'
+        for key, value in dictionary.items():
+            key_line+=value+key
         with io.open(self.compressedpath, 'w', encoding='utf-8') as file:
-            json.dump(dictionary, file, ensure_ascii=False)
+            file.write(key_line)
         with io.open(self.filepath, 'r') as readed_file:
             with io.open(self.compressedpath, 'a', encoding='utf-8') as writed_file:
                 for line in readed_file.readlines():
@@ -57,5 +69,5 @@ class FileCompressor():
                             words[i] = dictionary[words[i]]
                     writed_line = ' '.join(words)
                     print(writed_line)
-                    writed_file.write(writed_line)
+                    writed_file.write(writed_line+'\n')
 
