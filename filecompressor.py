@@ -57,6 +57,7 @@ class FileCompressor():
         key_line = '5'
         for key, value in dictionary.items():
             key_line += value + key
+        key_line+='\n'
         with io.open(self.compressedpath, 'w', encoding='utf-8') as file:
             file.write(key_line)
         with io.open(self.filepath, 'r', encoding='utf-8') as readed_file:
