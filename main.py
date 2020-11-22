@@ -1,8 +1,10 @@
 from filecompressor import FileCompressor
 from filedecompressor import FileDecompressor
+import logging
 
-if __name__=="__main__":
+if __name__ == "__main__":
+    logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
     compressor = FileCompressor()
-    # compressor.create_compressed_file()
+    compressor.create_compressed_file()
     decompressor = FileDecompressor()
-    decompressor.crete_dictionary()
+    decompressor.create_dictionary()
