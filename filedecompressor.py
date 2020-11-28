@@ -4,7 +4,7 @@ import string
 
 
 class FileDecompressor:
-    def __init__(self, compressedpath='files/compressedFile', decompressedpath='file/decompressedFile'):
+    def __init__(self, compressedpath='files/compressedFile', decompressedpath='files/decompressedFile'):
         self.compressedpath = compressedpath
         self.decompressedpath = decompressedpath
 
@@ -38,6 +38,7 @@ class FileDecompressor:
         dictionary = self.create_dictionary()
         result_line = ""
         words = []
+        is_dot = False
         with io.open(self.compressedpath, 'r', encoding='utf-8') as readed_file:
             lines = readed_file.readlines()
         del lines[0]
@@ -47,15 +48,15 @@ class FileDecompressor:
             for i in range(len(words)):
                 tmp_str = ""
                 index = 1
-                if words[i][0] in "$%&()*+, -./:;<=>?@[]^_`{|}~":
+                if words[i][0] in "!$%&()*+, -./:;<=>?@[]^_`{|}~":
                     index = 0
                     tmp_str += words[i][0]
-                    translator = str.maketrans('', '', "$%&()*+, -./:;<=>?@[]^_`{|}~")
+                    translator = str.maketrans('', '', "!$%&()*+, -./:;<=>?@[]^_`{|}~")
                     words[i] = words[i].translate(translator)
-                elif words[i][-1] in "$%&()*+, -./:;<=>?@[]^_`{|}~":
+                elif words[i][-1] in "!$%&()*+, -./:;<=>?@[]^_`{|}~":
                     tmp_str += words[i][-1]
                     index = -1
-                    translator = str.maketrans('', '', "$%&()*+, -./:;<=>?@[]^_`{|}~")
+                    translator = str.maketrans('', '', "!$%&()*+, -./:;<=>?@[]^_`{|}~")
                     words[i] = words[i].translate(translator)
 
                 if words[i] in dictionary:
@@ -66,10 +67,12 @@ class FileDecompressor:
                     elif index == -1:
                         words[i] = dictionary[words[i]]
                         words[i] += tmp_str
-                        print(words[i])
                     else:
                         words[i] = dictionary[words[i]]
+
             writed_line = ' '.join(words)
-            print(writed_line)
+            writed_line += '\n'
             result_line += writed_line
-        # print(result_line)
+        with io.open(self.decompressedpath, 'w', encoding='utf-8') as writed_file:
+            writed_file.write(result_line)
+
