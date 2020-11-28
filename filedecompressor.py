@@ -1,5 +1,7 @@
 import io
 import functions
+import string
+
 
 class FileDecompressor:
     def __init__(self, compressedpath='files/compressedFile', decompressedpath='file/decompressedFile'):
@@ -25,9 +27,49 @@ class FileDecompressor:
                 while line_dictionary[i] != '#':
                     value += line_dictionary[i]
                     i += 1
-                    if i>=len(line_dictionary):
+                    if i >= len(line_dictionary):
                         break
-                word_dictionary[key]=value
+                word_dictionary[key] = value
         return word_dictionary
 
+    @functions.decor
+    def create_decompressed_file(self):
+        """creates decompressed file"""
+        dictionary = self.create_dictionary()
+        result_line = ""
+        words = []
+        with io.open(self.compressedpath, 'r', encoding='utf-8') as readed_file:
+            lines = readed_file.readlines()
+        del lines[0]
+        for line in lines:
+            words.clear()
+            words = line.split()
+            for i in range(len(words)):
+                tmp_str = ""
+                index = 1
+                if words[i][0] in "$%&()*+, -./:;<=>?@[]^_`{|}~":
+                    index = 0
+                    tmp_str += words[i][0]
+                    translator = str.maketrans('', '', "$%&()*+, -./:;<=>?@[]^_`{|}~")
+                    words[i] = words[i].translate(translator)
+                elif words[i][-1] in "$%&()*+, -./:;<=>?@[]^_`{|}~":
+                    tmp_str += words[i][-1]
+                    index = -1
+                    translator = str.maketrans('', '', "$%&()*+, -./:;<=>?@[]^_`{|}~")
+                    words[i] = words[i].translate(translator)
 
+                if words[i] in dictionary:
+                    if index == 0:
+                        key = dictionary[words[i]]
+                        words[i] = tmp_str
+                        words[i] += key
+                    elif index == -1:
+                        words[i] = dictionary[words[i]]
+                        words[i] += tmp_str
+                        print(words[i])
+                    else:
+                        words[i] = dictionary[words[i]]
+            writed_line = ' '.join(words)
+            print(writed_line)
+            result_line += writed_line
+        # print(result_line)
