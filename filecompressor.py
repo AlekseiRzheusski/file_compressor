@@ -9,6 +9,7 @@ class FileCompressor():
         self.compressedpath = compressedpath
 
     def create_utf8(self):
+        """reformat file to utf-8"""
         with io.open(self.filepath, 'r', encoding='utf-8') as file:
             tmp_string = file.read()
         with io.open(self.filepath, 'a', encoding='utf-8') as writed_file:
@@ -16,7 +17,7 @@ class FileCompressor():
 
     @functions.decor
     def create_list_of_words(self):
-        '''creates dict of words where key is word and value is count of words in text'''
+        """creates dict of words where key is word and value is count of words in text"""
         list_of_words = {}
         words = []
         with io.open(self.filepath, 'r', encoding='utf-8') as file:
@@ -54,7 +55,7 @@ class FileCompressor():
         '''creates compressed file'''
         dictionary = self.create_dictionary()
         words = []
-        print(dictionary)
+        # print(dictionary)
         key_line = '5'
         for key, value in dictionary.items():
             key_line += value + key

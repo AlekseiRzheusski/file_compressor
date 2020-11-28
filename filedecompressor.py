@@ -15,7 +15,6 @@ class FileDecompressor:
         with io.open(self.compressedpath, 'r', encoding='utf-8') as file:
             line_dictionary = file.readlines()[0]
         length = int(line_dictionary[0])
-        print(length)
         value = ""
         for i in range(1, len(line_dictionary)):
             if line_dictionary[i] == '#':

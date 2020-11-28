@@ -7,4 +7,4 @@ if __name__ == "__main__":
     compressor = FileCompressor()
     compressor.create_compressed_file()
     decompressor = FileDecompressor()
-    decompressor.create_dictionary()
+    decompressor.create_decompressed_file()
