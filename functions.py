@@ -16,9 +16,3 @@ def decor(function):
 
     return wrapper
 
-
-# def check_capital_letters(sentence):
-#     lst = sentence.split(". ")
-#     for l in lst:
-#         print(l,l[0].isupper())
-#     return ". ".join(list(map(lambda i: i.capitalize() if not i.istitle() else i, lst)))
